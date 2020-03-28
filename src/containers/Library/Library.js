@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { paramCase } from 'change-case'
 import * as BooksAPI from '../../apis/BooksAPI'
 import Shelf from '../../components/Shelf/Shelf'
+import Button from '../../components/UI/Button/Button'
 
 export default class Library extends Component {
     static propTypes = {
@@ -50,7 +51,10 @@ export default class Library extends Component {
                         {shelfItems}
                     </div>
                 </div>
-                {/* <Button /> */}
+                <Button
+                    linkTo='/search'
+                    className='open-search'
+                />
             </div>
         )
     }

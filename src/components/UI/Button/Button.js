@@ -1,5 +1,13 @@
-/*
-<div className="open-search">
-    <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-</div>
-*/
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+const Button = props => {
+    const { className, linkTo } = props; 
+    return (
+        <div className={className}>
+            <Link to={linkTo}>Add a book</Link>
+        </div>
+    )
+}
+
+export default Button
