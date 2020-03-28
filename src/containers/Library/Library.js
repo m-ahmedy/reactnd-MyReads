@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { paramCase } from 'change-case'
+import { paramCase, camelCase } from 'change-case'
 import * as BooksAPI from '../../apis/BooksAPI'
 import Shelf from '../../components/Shelf/Shelf'
 import Button from '../../components/UI/Button/Button'
@@ -33,10 +33,19 @@ export default class Library extends Component {
 
     render() {
         const { shelves } = this.props;
+        const { books } = this.state;
+
+        const bookLists = {};
+
+        shelves.forEach(shelf => {
+            bookLists[camelCase(shelf)] = books.filter(book => camelCase(book.shelf) === camelCase(shelf))
+        });
+
         const shelfItems = shelves.map(shelf => (
             <Shelf
                 title={shelf}
                 key={paramCase(shelf)}
+                bookList={bookLists[camelCase(shelf)]}
             />
         ));
 
