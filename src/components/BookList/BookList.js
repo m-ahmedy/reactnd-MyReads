@@ -1,14 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Book from './Book/Book'
 
 const BookList = props => {
     const { bookList, className } = props;
 
-    const bookItems = bookList.length 
-        ? bookList.map(book => (
-            <p key={book}>
-                A book
-            </p>
+    const bookItems = new Array(3).length 
+        ? new Array(3).fill("A book").map(book => (
+            <Book key={Math.random()*10}/>
         ))
         : null;
     
