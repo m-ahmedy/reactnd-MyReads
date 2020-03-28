@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { paramCase } from 'change-case'
 import * as BooksAPI from '../../apis/BooksAPI'
+import Shelf from '../../components/Shelf/Shelf'
 
 export default class Library extends Component {
     static propTypes = {
@@ -29,6 +31,15 @@ export default class Library extends Component {
     }
 
     render() {
+        const { shelves } = this.props;
+        const shelfItems = shelves.map(shelf => (
+            <Shelf
+                title={shelf}
+                key={paramCase(shelf)}
+            />
+        ));
+
+        console.log(shelves);
         return (
             <div className="list-books">
                 <div className="list-books-title">
@@ -36,9 +47,7 @@ export default class Library extends Component {
                 </div>
                 <div className="list-books-content">
                     <div>
-                        {/* <Shelf />
-                        <Shelf />
-                        <Shelf /> */}
+                        {shelfItems}
                     </div>
                 </div>
                 {/* <Button /> */}
