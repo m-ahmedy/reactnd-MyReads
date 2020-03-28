@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import OptionSelect from '../../UI/OptionSelect/OptionSelect'
 
 
 // Test
@@ -78,7 +79,11 @@ export default class Book extends Component {
                     <div className="book">
                         <div className="book-top">
                             <div className="book-cover" style={style}></div>
-                            Option Select
+                            <OptionSelect
+                                title='Move'
+                                options={[]}
+                                onChangeOption={() => { }}
+                            />
                         </div>
                         <div className="book-title">{this.state.bookInfo.title}</div>
                         <div className="book-authors">{this.state.bookInfo.authors.join(', ')}</div>
@@ -86,7 +91,7 @@ export default class Book extends Component {
                 </li>
             )
             : null;
-            
+
         return bookItem;
     }
 }
