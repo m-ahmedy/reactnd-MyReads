@@ -6,8 +6,11 @@ const BookList = props => {
     const { bookList, className } = props;
 
     const bookItems = new Array(3).length 
-        ? new Array(3).fill("A book").map(book => (
-            <Book key={Math.random()*10}/>
+        ? bookList.map(book => (
+            <Book
+                key={book.id}
+                bookInfo={{...book}}    
+            />
         ))
         : null;
     

@@ -3,10 +3,8 @@ import PropTypes from 'prop-types'
 import BookList from '../BookList/BookList'
 
 const Shelf = props => {
-    const { title } = props;
+    const { title, bookList } = props;
 
-    // Test
-    const bookList = [];
     return (
         <div className="bookshelf">
             <h2 className="bookshelf-title">{title}</h2>
