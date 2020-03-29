@@ -48,6 +48,8 @@ export default class Book extends Component {
                             <div className="book-cover" style={style}></div>
                             <OptionSelect
                                 title='Move'
+                                selectedOption={bookInfo.shelf}
+
                                 options={this.props.shelfOptions}
                                 onChangeOption={this.changeOptionHandler}
                             />
