@@ -1,54 +1,11 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { paramCase, camelCase } from 'change-case'
-import * as BooksAPI from '../../apis/BooksAPI'
 import Shelf from '../../components/Shelf/Shelf'
 import Button from '../../components/UI/Button/Button'
 
 export default class Library extends Component {
-    static propTypes = {
-        prop: PropTypes
-    }
-
-    state = {
-        books: []
-    }
-
-    componentDidMount () {
-        BooksAPI.getAll()
-            .then(fetchedBooks => {
-                console.log(fetchedBooks);
-
-                const bookInfo = fetchedBooks.map(book => ({
-                    ...book,
-                    shelf: 'None'
-                }));
-
-                console.log(bookInfo);
-                this.setState(prevState => ({
-                    books: bookInfo
-                }));
-            });
-    }
-
-    changeShelfHandler = (updatedBookInfo) => {
-        console.log('[Library]', updatedBookInfo)
-
-        const updatedBooks = this.state.books.map(book => {
-            return book.id === updatedBookInfo.id
-                ? updatedBookInfo
-                : book
-        });
-
-        this.setState((prevState) => ({
-            ...prevState,
-            books: updatedBooks
-        }));
-    }
-
     render() {
-        const { shelves } = this.props;
-        const { books } = this.state;
+        const { shelves, books, onChangeShelf } = this.props;
 
         const bookLists = {};
 
@@ -65,7 +22,7 @@ export default class Library extends Component {
                 bookList={bookLists[camelCase(shelf)]}
 
                 shelfOptions={shelfOptions}
-                onChangeShelf={this.changeShelfHandler}
+                onChangeShelf={onChangeShelf}
             />
         ));
 

@@ -23,9 +23,16 @@ export default class Search extends Component {
                 .then(fetchedBooks => {
                     const queryBooks = fetchedBooks.filter(book => book.title.toLowerCase().includes(query.toLowerCase()));
 
+                    const booksWithShelf = queryBooks.map(book => ({
+                        ...book,
+                        shelf: this.props.books.find(libBook => book.id === libBook.id).shelf
+                    }));
+
+                    console.log(booksWithShelf);
+
                     this.setState(prevState => ({
-                        queryBooks: queryBooks
-                    }))
+                        queryBooks: booksWithShelf
+                    }));
                 });
         }
     }
@@ -56,6 +63,7 @@ export default class Search extends Component {
                         bookList={this.state.queryBooks}
                         
                         shelfOptions={this.props.shelves}
+                        onChangeShelf={this.props.onChangeShelf}
                     />
                 </div>
             </div>
