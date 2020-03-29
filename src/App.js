@@ -12,7 +12,16 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    BooksAPI.getAll()
+    if (localStorage.getItem('bookData')) {
+      const savedData = JSON.parse(localStorage.getItem('bookData'));
+
+      console.log(savedData);
+      this.setState(prevState => ({
+        books: savedData
+      }));
+
+    } else {
+      BooksAPI.getAll()
       .then(fetchedBooks => {
         console.log(fetchedBooks);
 
@@ -25,7 +34,10 @@ class BooksApp extends React.Component {
         this.setState(prevState => ({
           books: bookInfo
         }));
+
+        localStorage.setItem('bookData', JSON.stringify(bookInfo));
       });
+    }
   }
 
   changeShelfHandler = (updatedBookInfo) => {
@@ -40,6 +52,8 @@ class BooksApp extends React.Component {
     this.setState((prevState) => ({
       books: updatedBooks
     }));
+
+    localStorage.setItem('bookData', JSON.stringify(updatedBooks));
   }
 
   addShelfHandler = () => { }
