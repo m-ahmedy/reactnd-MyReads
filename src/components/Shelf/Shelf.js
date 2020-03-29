@@ -5,20 +5,23 @@ import BookList from '../BookList/BookList'
 const Shelf = props => {
     const { title, bookList, shelfOptions, onChangeShelf } = props;
 
-    return (
-        <div className="bookshelf">
-            <h2 className="bookshelf-title">{title}</h2>
-            <div className="bookshelf-books">
-                <BookList
-                    className='books-grid'
-                    bookList={bookList}
+    let shelfItem = title !== 'None'
+        ? (
+            <div className="bookshelf">
+                <h2 className="bookshelf-title">{title}</h2>
+                <div className="bookshelf-books">
+                    <BookList
+                        className='books-grid'
+                        bookList={bookList}
 
-                    shelfOptions={shelfOptions}
-                    onChangeShelf={onChangeShelf}
-                />
+                        shelfOptions={shelfOptions}
+                        onChangeShelf={onChangeShelf}
+                    />
+                </div>
             </div>
-        </div>
-    )
+        )
+        : null;
+    return shelfItem;
 }
 
 Shelf.propTypes = {
