@@ -10,16 +10,12 @@ export default class Search extends Component {
         queryBooks: []
     }
 
-    queryHandler = (query) => {
-        console.log();
+    debounceTimer = null;
 
-        const queryParams = query.split(/[^\w]/).filter(param => param !== '');
+    initiateSearch = () => {
+        console.log('Fired the timer', new Date().getTime());
 
-        this.setState(prevState => ({
-            query: query,
-            queryParams: queryParams
-        }));
-
+        const { queryParams } = this.state;
         if (queryParams.length !== 0) {
             BooksAPI.getAll()
                 .then(fetchedBooks => {
@@ -55,11 +51,26 @@ export default class Search extends Component {
         }
     }
 
+    queryHandler = (query) => {
+        console.log();
+
+        const queryParams = query.split(/[^\w]/).filter(param => param !== '');
+
+        this.setState(prevState => ({
+            query: query,
+            queryParams: queryParams
+        }));
+
+        clearTimeout(this.debounceTimer);
+        console.log(this.debounceTimer, new Date().getTime());
+        this.debounceTimer = setTimeout(this.initiateSearch, 1500);
+    }
+
     render() {
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-                    <Button 
+                    <Button
                         className='close-search'
                         linkTo='/'
                     />
@@ -78,7 +89,7 @@ export default class Search extends Component {
                     <BookList
                         className='books-grid'
                         bookList={this.state.queryBooks}
-                        
+
                         shelfOptions={this.props.shelves}
                         onChangeShelf={this.props.onChangeShelf}
                     />
