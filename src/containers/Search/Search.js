@@ -5,29 +5,30 @@ import BookList from '../../components/BookList/BookList'
 
 export default class Search extends Component {
     state = {
-        query: [],
+        query: '',
+        queryParams: [],
         queryBooks: []
     }
 
     queryHandler = (query) => {
-        console.log(query);
+        console.log();
+
+        const queryParams = query.split(/[^\w]/);
+
         this.setState(prevState => ({
-            query: query.split(' ')
+            query: query,
+            queryParams: queryParams
         }));
-    }
 
-    searchWithQuery = (event) => {
-        const { query } = this.state;
-
-        if (event.key === 'Enter' && query !== ['']) {
+        if (queryParams.join('') !== '') {
             BooksAPI.getAll()
                 .then(fetchedBooks => {
-                    console.log(query);
+                    console.log(queryParams);
 
                     const queryBooks = fetchedBooks.filter(book => {
                         let found = false;
-                        query.forEach(queryParam => {
-                            if (book.title.toLowerCase().includes(queryParam.toLowerCase())) {
+                        queryParams.forEach(queryParam => {
+                            if (book.title.toLowerCase().includes(queryParam.toLowerCase()) || book.authors.join(' ').toLowerCase().includes(queryParam.toLowerCase())) {
                                 console.log('Found on ', book.title);
                                 found = true;
                             }
@@ -47,6 +48,10 @@ export default class Search extends Component {
                         queryBooks: booksWithShelf
                     }));
                 });
+        } else {
+            this.setState(prevState => ({
+                queryBooks: []
+            }));
         }
     }
 
@@ -63,9 +68,8 @@ export default class Search extends Component {
                         <input
                             type="text"
                             placeholder="Search by title or author"
-                            value={this.state.query.join(' ')}
+                            value={this.state.query}
                             onChange={(event) => this.queryHandler(event.target.value)}
-                            onKeyUp={this.searchWithQuery}
                         />
 
                     </div>
