@@ -22,21 +22,27 @@ class BooksApp extends React.Component {
 
     } else {
       BooksAPI.getAll()
-      .then(fetchedBooks => {
-        console.log(fetchedBooks);
+        .then(fetchedBooks => {
+          console.log(fetchedBooks);
 
-        const bookInfo = fetchedBooks.map(book => ({
-          ...book,
-          shelf: 'None'
-        }));
+          const bookData = fetchedBooks.map(book => ({
+            ...book,
+            shelf: 'None'
+          }));
 
-        console.log(bookInfo);
-        this.setState(prevState => ({
-          books: bookInfo
-        }));
+          console.log(bookData);
+          this.setState(prevState => ({
+            books: bookData
+          }));
 
-        localStorage.setItem('bookData', JSON.stringify(bookInfo));
-      });
+          const localBookData = bookData.filter(book => book.shelf !== 'None');
+
+          if (localBookData.length) {
+            localStorage.setItem('bookData', JSON.stringify(localBookData));
+          } else {
+            localStorage.removeItem('bookData')
+          }
+        });
     }
   }
 
@@ -53,7 +59,14 @@ class BooksApp extends React.Component {
       books: updatedBooks
     }));
 
-    localStorage.setItem('bookData', JSON.stringify(updatedBooks));
+    const localBookData = updatedBooks.filter(book => book.shelf !== 'None');
+
+    if (localBookData.length) {
+      localStorage.setItem('bookData', JSON.stringify(localBookData));
+    } else {
+      localStorage.removeItem('bookData')
+    }
+
   }
 
   addShelfHandler = () => { }
