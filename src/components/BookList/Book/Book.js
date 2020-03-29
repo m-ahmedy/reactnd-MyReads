@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import update from 'immutability-helper'
-import { camelCase } from'change-case'
+import { camelCase } from 'change-case'
 import OptionSelect from '../../UI/OptionSelect/OptionSelect'
 
 export default class Book extends Component {
@@ -14,38 +14,37 @@ export default class Book extends Component {
     }
 
     render() {
-        let bookItem = null;
-        if (this.props.bookInfo) {
-            const { bookInfo } = this.props;
-            const style = {
-                width: 128,
-                height: 193,
-                backgroundImage: `url(${bookInfo.imageLinks.thumbnail})`
-            };
 
-            bookItem = (
-                <li>
-                    <div className="book">
-                        <div className="book-top">
-                            <div className="book-cover" style={style}></div>
-                            <OptionSelect
-                                title='Move'
-                                selectedOption={bookInfo.shelf}
+        const { bookInfo } = this.props;
+        const style = {
+            width: 128,
+            height: 193,
+            backgroundImage: bookInfo.imageLinks ? `url(${bookInfo.imageLinks.thumbnail})` : 'none'
+        };
 
-                                options={this.props.shelfOptions}
-                                onChangeOption={this.changeOptionHandler}
-                            />
-                        </div>
-                        <div className="book-title">{bookInfo.title}</div>
-                        {
-                            bookInfo.authors
+        const bookItem = (
+            <li>
+                <div className="book">
+                    <div className="book-top">
+                        <div className="book-cover" style={style}></div>
+                        <OptionSelect
+                            title='Move'
+                            selectedOption={bookInfo.shelf}
+
+                            options={this.props.shelfOptions}
+                            onChangeOption={this.changeOptionHandler}
+                        />
+                    </div>
+                    <div className="book-title">{bookInfo.title}</div>
+                    {
+                        bookInfo.authors
                             ? <div className="book-authors">{bookInfo.authors.join(', ')}</div>
                             : null
-                        }
-                    </div>
-                </li>
-            );
-        }
+                    }
+                </div>
+            </li>
+        );
+
 
         return bookItem;
     }

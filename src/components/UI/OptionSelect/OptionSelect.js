@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { sentenceCase } from 'change-case';
 
 const OptionSelect = props => {
+    // Options passed here as camelCase
     const { options, onChangeOption, title, selectedOption } = props;
 
     const optionItems = options.map(option => (
@@ -18,7 +19,7 @@ const OptionSelect = props => {
         <div className="book-shelf-changer">
             <select
                 onChange={onChangeOption}
-                defaultValue={selectedOption}
+                defaultValue={selectedOption ? sentenceCase(selectedOption) : 'none'}
             >
                 <option value={title} disabled>{title}</option>
                 {optionItems}

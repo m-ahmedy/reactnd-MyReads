@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
-import update from 'immutability-helper'
 import './App.css'
 import * as BooksAPI from './apis/BooksAPI'
 import Library from './containers/Library/Library'
@@ -13,8 +12,10 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem('bookData')) {
-      const savedData = JSON.parse(localStorage.getItem('bookData'));
+    const localData  = localStorage.getItem('bookData');
+
+    if ( localData && localData.length !== 0) {
+      const savedData = JSON.parse(localData);
 
       console.log('[App]', savedData);
       this.setState(prevState => ({
@@ -29,6 +30,8 @@ class BooksApp extends React.Component {
           this.setState(prevState => ({
             books: fetchedBooks
           }));
+
+          localStorage.setItem('bookData', JSON.stringify(fetchedBooks.filter(book => book.shelf !== 'none')));
         });
     }
   }
@@ -38,7 +41,7 @@ class BooksApp extends React.Component {
 
     BooksAPI.update(updatedBookInfo.id, updatedBookInfo.shelf)
       .then(res => {
-        const updatedBooks = update(this.state.books, { $push: [] })
+        const updatedBooks = this.state.books
           .filter(book => book.id !== updatedBookInfo.id)
           .concat(updatedBookInfo);
 
@@ -47,7 +50,9 @@ class BooksApp extends React.Component {
         this.setState((prevState) => ({
           books: updatedBooks
         }));
-      })
+
+        localStorage.setItem('bookData', JSON.stringify(updatedBooks.filter(book => book.shelf !== 'none')));
+      });
   }
 
   addShelfHandler = () => { }

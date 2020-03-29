@@ -8,7 +8,8 @@ export default class Search extends Component {
     state = {
         query: '',
         queryParams: [],
-        queryBooks: []
+        queryBooks: [],
+        loading: false
     }
 
     debounceTimer = null;
@@ -29,11 +30,30 @@ export default class Search extends Component {
                     })
                 })
                 .catch(err => console.log(err));
+
             
-            console.log('[Search]',fetchedBooks);
+            const updatedBooksWithLocalState = fetchedBooks.map(book => {
+                const b = this.props.books.find(b => b.id === book.id);
+
+                return {
+                    ...book,
+                    shelf: b ? b.shelf : 'none'
+                };
+            });
+
+            console.log('[Search]', updatedBooksWithLocalState);
 
             this.setState(prevState => ({
-                queryBooks: fetchedBooks
+                queryBooks: updatedBooksWithLocalState,
+                loading: false
+            }));
+
+
+
+        } else {
+            this.setState(prevState => ({
+                queryBooks: [],
+                loading: false
             }))
         }
     }
@@ -44,7 +64,8 @@ export default class Search extends Component {
 
         this.setState(prevState => ({
             query: query,
-            queryParams: queryParams
+            queryParams: queryParams,
+            loading: true
         }));
 
         clearTimeout(this.debounceTimer);
@@ -72,13 +93,23 @@ export default class Search extends Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <BookList
-                        className='books-grid'
-                        bookList={this.state.queryBooks}
+                    {
+                        this.state.queryBooks.length !== 0
+                            ? (
+                                <BookList
+                                    className='books-grid'
+                                    bookList={this.state.queryBooks}
 
-                        shelfOptions={this.props.shelves}
-                        onChangeShelf={this.props.onChangeShelf}
-                    />
+                                    shelfOptions={this.props.shelves}
+                                    onChangeShelf={this.props.onChangeShelf}
+                                />
+                            )
+                            : this.state.query !== '' && !this.state.loading
+                                ? (
+                                    <p style={{ textAlign: 'center' }}>Not found</p>
+                                )
+                                : null
+                    }
                 </div>
             </div>
         )
