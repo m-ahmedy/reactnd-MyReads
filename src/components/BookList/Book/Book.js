@@ -3,33 +3,23 @@ import OptionSelect from '../../UI/OptionSelect/OptionSelect'
 import { sentenceCase } from 'change-case'
 
 export default class Book extends Component {
-    state = {}
-
-    componentDidMount() {
-        this.setState(() => ({
-            bookInfo: this.props.bookInfo
-        }));
-    }
-
     changeOptionHandler = (event) => {
         console.log({ ...event });
         console.log(event.target.value);
 
         const selectedShelf = sentenceCase(event.target.value);
         const updatedBookInfo = {
-            ...this.state.bookInfo,
+            ...this.props.bookInfo,
             shelf: selectedShelf
         };
-
-        this.setState(prevState => updatedBookInfo);
 
         this.props.onChangeShelf(updatedBookInfo);
     }
 
     render() {
         let bookItem = null;
-        if (this.state.bookInfo) {
-            const { bookInfo } = this.state;
+        if (this.props.bookInfo) {
+            const { bookInfo } = this.props;
             const style = {
                 width: 128,
                 height: 193,
