@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as BooksAPI from '../../apis/BooksAPI'
+import * as _ from 'underscore'
 import Button from '../../components/UI/Button/Button'
 import BookList from '../../components/BookList/BookList'
 
@@ -12,47 +13,32 @@ export default class Search extends Component {
 
     debounceTimer = null;
 
-    initiateSearch = () => {
-        console.log('Fired the timer', new Date().getTime());
+    initiateSearch = async () => {
+        console.log('[Search] Fired the timer', new Date().getTime());
 
         const { queryParams } = this.state;
         if (queryParams.length !== 0) {
-            BooksAPI.getAll()
-                .then(fetchedBooks => {
-                    console.log(queryParams);
+            let promises = queryParams.map(param => BooksAPI.search(param));
 
-                    const queryBooks = fetchedBooks.filter(book => {
-                        let found = false;
-                        queryParams.forEach(queryParam => {
-                            if (book.title.toLowerCase().includes(queryParam.toLowerCase()) || book.authors.join(' ').toLowerCase().includes(queryParam.toLowerCase())) {
-                                console.log('Found on ', book.title);
-                                found = true;
-                            }
-                        });
+            let fetchedBooks = [];
+            await Promise.all(promises)
+                .then(res => {
+                    res.forEach(arr => {
+                        console.log('[Search]', arr);
+                        fetchedBooks = _.union(fetchedBooks, arr);
+                    })
+                })
+                .catch(err => console.log(err));
+            
+            console.log('[Search]',fetchedBooks);
 
-                        return found;
-                    });
-
-                    const booksWithShelf = queryBooks.map(book => ({
-                        ...book,
-                        shelf: this.props.books.find(libBook => book.id === libBook.id).shelf
-                    }));
-
-                    console.log(booksWithShelf);
-
-                    this.setState(prevState => ({
-                        queryBooks: booksWithShelf
-                    }));
-                });
-        } else {
             this.setState(prevState => ({
-                queryBooks: []
-            }));
+                queryBooks: fetchedBooks
+            }))
         }
     }
 
     queryHandler = (query) => {
-        console.log();
 
         const queryParams = query.split(/[^\w]/).filter(param => param !== '');
 
@@ -62,7 +48,7 @@ export default class Search extends Component {
         }));
 
         clearTimeout(this.debounceTimer);
-        console.log(this.debounceTimer, new Date().getTime());
+        console.log('[Search]', this.debounceTimer, new Date().getTime());
         this.debounceTimer = setTimeout(this.initiateSearch, 1500);
     }
 

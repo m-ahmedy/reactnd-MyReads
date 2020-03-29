@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { paramCase, camelCase } from 'change-case'
+import { camelCase } from 'change-case'
 import Shelf from '../../components/Shelf/Shelf'
 import Button from '../../components/UI/Button/Button'
 
@@ -9,16 +9,18 @@ export default class Library extends Component {
 
         const bookLists = {};
 
+        console.log('[Library]', books);
         shelves.forEach(shelf => {
             bookLists[camelCase(shelf)] = books.filter(book => camelCase(book.shelf) === camelCase(shelf))
         });
 
-        const shelfOptions = shelves.map(shelf => paramCase(shelf));
+        const shelfOptions = shelves.map(shelf => camelCase(shelf));
 
+        console.log('[Library]', shelfOptions);
         const shelfItems = shelves.map(shelf => (
             <Shelf
                 title={shelf}
-                key={paramCase(shelf)}
+                key={camelCase(shelf)}
                 bookList={bookLists[camelCase(shelf)]}
 
                 shelfOptions={shelfOptions}
@@ -26,7 +28,7 @@ export default class Library extends Component {
             />
         ));
 
-        console.log(shelves);
+        console.log('[Library]', shelves);
         return (
             <div className="list-books">
                 <div className="list-books-title">

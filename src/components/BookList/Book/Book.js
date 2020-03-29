@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
+import update from 'immutability-helper'
+import { camelCase } from'change-case'
 import OptionSelect from '../../UI/OptionSelect/OptionSelect'
-import { sentenceCase } from 'change-case'
 
 export default class Book extends Component {
     changeOptionHandler = (event) => {
-        console.log({ ...event });
-        console.log(event.target.value);
+        console.log('[Book]', { ...event });
 
-        const selectedShelf = sentenceCase(event.target.value);
-        const updatedBookInfo = {
-            ...this.props.bookInfo,
-            shelf: selectedShelf
-        };
+        const selectedShelf = camelCase(event.target.value);
+        const updatedBookInfo = update(this.props.bookInfo, { $merge: { shelf: selectedShelf } })
 
         this.props.onChangeShelf(updatedBookInfo);
     }
@@ -40,7 +37,11 @@ export default class Book extends Component {
                             />
                         </div>
                         <div className="book-title">{bookInfo.title}</div>
-                        <div className="book-authors">{bookInfo.authors.join(', ')}</div>
+                        {
+                            bookInfo.authors
+                            ? <div className="book-authors">{bookInfo.authors.join(', ')}</div>
+                            : null
+                        }
                     </div>
                 </li>
             );

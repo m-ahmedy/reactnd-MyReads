@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
+import update from 'immutability-helper'
 import './App.css'
 import * as BooksAPI from './apis/BooksAPI'
 import Library from './containers/Library/Library'
@@ -15,7 +16,7 @@ class BooksApp extends React.Component {
     if (localStorage.getItem('bookData')) {
       const savedData = JSON.parse(localStorage.getItem('bookData'));
 
-      console.log(savedData);
+      console.log('[App]', savedData);
       this.setState(prevState => ({
         books: savedData
       }));
@@ -23,25 +24,11 @@ class BooksApp extends React.Component {
     } else {
       BooksAPI.getAll()
         .then(fetchedBooks => {
-          console.log(fetchedBooks);
+          console.log('[App]', fetchedBooks);
 
-          const bookData = fetchedBooks.map(book => ({
-            ...book,
-            shelf: 'None'
-          }));
-
-          console.log(bookData);
           this.setState(prevState => ({
-            books: bookData
+            books: fetchedBooks
           }));
-
-          const localBookData = bookData.filter(book => book.shelf !== 'None');
-
-          if (localBookData.length) {
-            localStorage.setItem('bookData', JSON.stringify(localBookData));
-          } else {
-            localStorage.removeItem('bookData')
-          }
         });
     }
   }
@@ -49,24 +36,18 @@ class BooksApp extends React.Component {
   changeShelfHandler = (updatedBookInfo) => {
     console.log('[App]', updatedBookInfo)
 
-    const updatedBooks = this.state.books.map(book => {
-      return book.id === updatedBookInfo.id
-        ? updatedBookInfo
-        : book
-    });
+    BooksAPI.update(updatedBookInfo.id, updatedBookInfo.shelf)
+      .then(res => {
+        const updatedBooks = update(this.state.books, { $push: [] })
+          .filter(book => book.id !== updatedBookInfo.id)
+          .concat(updatedBookInfo);
 
-    this.setState((prevState) => ({
-      books: updatedBooks
-    }));
+        console.log('[App]', updatedBooks);
 
-    const localBookData = updatedBooks.filter(book => book.shelf !== 'None');
-
-    if (localBookData.length) {
-      localStorage.setItem('bookData', JSON.stringify(localBookData));
-    } else {
-      localStorage.removeItem('bookData')
-    }
-
+        this.setState((prevState) => ({
+          books: updatedBooks
+        }));
+      })
   }
 
   addShelfHandler = () => { }
