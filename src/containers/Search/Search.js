@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import * as BooksAPI from '../../apis/BooksAPI'
 import * as _ from 'underscore'
-import Button from '../../components/UI/Button/Button'
-import BookList from '../../components/BookList/BookList'
+import SearchBar from '../../components/SearchBar/SearchBar'
+import SearchResults from '../../components/SearchResults/SearchResults'
 
 export default class Search extends Component {
     state = {
@@ -86,41 +86,16 @@ export default class Search extends Component {
     render() {
         return (
             <div className="search-books">
-                <div className="search-books-bar">
-                    <Button
-                        className='close-search'
-                        linkTo='/'
-                    />
-                    <div className="search-books-input-wrapper">
-
-                        <input
-                            type="text"
-                            placeholder="Search by title or author"
-                            value={this.state.query}
-                            onChange={(event) => this.queryHandler(event.target.value)}
-                        />
-
-                    </div>
-                </div>
-                <div className="search-books-results">
-                    {
-                        this.state.queryBooks.length !== 0
-                            ? (
-                                <BookList
-                                    className='books-grid'
-                                    bookList={this.state.queryBooks}
-
-                                    shelfOptions={this.props.shelves}
-                                    onChangeShelf={this.props.onChangeShelf}
-                                />
-                            )
-                            : this.state.query !== '' && !this.state.loading
-                                ? (
-                                    <p style={{ textAlign: 'center' }}>Not found</p>
-                                )
-                                : null
-                    }
-                </div>
+                <SearchBar
+                    value={this.state.query}
+                    onQueryChange={this.queryHandler}
+                />
+                <SearchResults
+                    searchState={this.state}
+                    
+                    shelfOptions={this.props.shelves}
+                    onChangeShelf={this.props.onChangeShelf}
+                />
             </div>
         )
     }
