@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { camelCase } from 'change-case'
 import Shelf from '../../components/Shelf/Shelf'
 import Button from '../../components/UI/Button/Button'
 
@@ -11,19 +10,17 @@ export default class Library extends Component {
 
         console.log('[Library]', books);
         shelves.forEach(shelf => {
-            bookLists[camelCase(shelf)] = books.filter(book => camelCase(book.shelf) === camelCase(shelf))
+            bookLists[shelf.key] = books.filter(book => book.shelf === shelf.key);
         });
 
-        const shelfOptions = shelves.map(shelf => camelCase(shelf));
-
-        console.log('[Library]', shelfOptions);
+        console.log('[Library]', shelves);
         const shelfItems = shelves.map(shelf => (
             <Shelf
-                title={shelf}
-                key={camelCase(shelf)}
-                bookList={bookLists[camelCase(shelf)]}
+                title={shelf.name}
+                key={shelf.key}
+                bookList={bookLists[shelf.key]}
 
-                shelfOptions={shelfOptions}
+                shelfOptions={shelves}
                 onChangeShelf={onChangeShelf}
             />
         ));

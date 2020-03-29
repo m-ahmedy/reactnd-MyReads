@@ -27,18 +27,28 @@ export default class Search extends Component {
                     res.forEach(arr => {
                         console.log('[Search]', arr);
                         fetchedBooks = _.union(fetchedBooks, arr);
-                    })
+                    });
                 })
                 .catch(err => console.log(err));
 
-            
             const updatedBooksWithLocalState = fetchedBooks.map(book => {
-                const b = this.props.books.find(b => b.id === book.id);
+                // console.log('[Search] fetched', book);
+                console.log('[Search] fetched id', book.title);
 
-                return {
+                const b = this.props.books.find(b => {
+                    console.log('[Search] local name', b.title);
+
+                    return b.title === book.title
+                });
+
+                if (b) console.log('[Search] updating the book', b);
+
+                const o = {
                     ...book,
                     shelf: b ? b.shelf : 'none'
                 };
+
+                return o;
             });
 
             console.log('[Search]', updatedBooksWithLocalState);

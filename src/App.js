@@ -7,14 +7,31 @@ import Search from './containers/Search/Search'
 
 class BooksApp extends React.Component {
   state = {
-    shelfOptions: ['Currently reading', 'Want to read', 'Read', 'None'],
+    shelves: [
+      {
+        name: 'Currently reading',
+        key: 'currentlyReading'
+      },
+      {
+        name: 'Want to read',
+        key: 'wantToRead'
+      },
+      {
+        name: 'Read',
+        key: 'read'
+      },
+      {
+        name: 'None',
+        key: 'none'
+      }
+    ],
     books: []
   }
 
   componentDidMount() {
-    const localData  = localStorage.getItem('bookData');
+    const localData = localStorage.getItem('bookData');
 
-    if ( localData && localData.length !== 0) {
+    if (localData && localData.length !== 0) {
       const savedData = JSON.parse(localData);
 
       console.log('[App]', savedData);
@@ -55,19 +72,12 @@ class BooksApp extends React.Component {
       });
   }
 
-  addShelfHandler = () => { }
-
-  removeShelfHandler = () => { }
-
   renderLibrary = () => {
     return (
       <Library
-        shelves={this.state.shelfOptions}
+        shelves={this.state.shelves}
         books={this.state.books}
         onChangeShelf={this.changeShelfHandler}
-
-        onAddShelf={this.addShelfHandler}
-        onRemoveShelf={this.removeShelfHandler}
       />
     );
   }
@@ -75,7 +85,7 @@ class BooksApp extends React.Component {
   renderSearch = () => {
     return (
       <Search
-        shelves={this.state.shelfOptions}
+        shelves={this.state.shelves}
         books={this.state.books}
         onChangeShelf={this.changeShelfHandler}
       />

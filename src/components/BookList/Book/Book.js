@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import update from 'immutability-helper'
-import { camelCase } from 'change-case'
 import OptionSelect from '../../UI/OptionSelect/OptionSelect'
 
 export default class Book extends Component {
     changeOptionHandler = (event) => {
-        console.log('[Book]', { ...event });
+        console.log('[Book] options', this.props.shelfOptions);
 
-        const selectedShelf = camelCase(event.target.value);
+        const selectedShelf = event.target.value;
         const updatedBookInfo = update(this.props.bookInfo, { $merge: { shelf: selectedShelf } })
 
         this.props.onChangeShelf(updatedBookInfo);
