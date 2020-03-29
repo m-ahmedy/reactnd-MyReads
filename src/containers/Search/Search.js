@@ -5,23 +5,36 @@ import BookList from '../../components/BookList/BookList'
 
 export default class Search extends Component {
     state = {
-        query: '',
+        query: [],
         queryBooks: []
     }
 
     queryHandler = (query) => {
+        console.log(query);
         this.setState(prevState => ({
-            query: query.trim()
+            query: query.split(' ')
         }));
     }
 
     searchWithQuery = (event) => {
         const { query } = this.state;
 
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && query !== ['']) {
             BooksAPI.getAll()
                 .then(fetchedBooks => {
-                    const queryBooks = fetchedBooks.filter(book => book.title.toLowerCase().includes(query.toLowerCase()));
+                    console.log(query);
+
+                    const queryBooks = fetchedBooks.filter(book => {
+                        let found = false;
+                        query.forEach(queryParam => {
+                            if (book.title.toLowerCase().includes(queryParam.toLowerCase())) {
+                                console.log('Found on ', book.title);
+                                found = true;
+                            }
+                        });
+
+                        return found;
+                    });
 
                     const booksWithShelf = queryBooks.map(book => ({
                         ...book,
@@ -50,7 +63,7 @@ export default class Search extends Component {
                         <input
                             type="text"
                             placeholder="Search by title or author"
-                            value={this.state.query}
+                            value={this.state.query.join(' ')}
                             onChange={(event) => this.queryHandler(event.target.value)}
                             onKeyUp={this.searchWithQuery}
                         />
