@@ -31,6 +31,21 @@ export default class Library extends Component {
             });
     }
 
+    changeShelfHandler = (updatedBookInfo) => {
+        console.log('[Library]', updatedBookInfo)
+
+        const updatedBooks = this.state.books.map(book => {
+            return book.id === updatedBookInfo.id
+                ? updatedBookInfo
+                : book
+        });
+
+        this.setState((prevState) => ({
+            ...prevState,
+            books: updatedBooks
+        }));
+    }
+
     render() {
         const { shelves } = this.props;
         const { books } = this.state;
@@ -50,6 +65,7 @@ export default class Library extends Component {
                 bookList={bookLists[camelCase(shelf)]}
 
                 shelfOptions={shelfOptions}
+                onChangeShelf={this.changeShelfHandler}
             />
         ));
 

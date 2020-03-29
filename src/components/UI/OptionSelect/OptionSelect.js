@@ -16,7 +16,7 @@ const OptionSelect = props => {
 
     return (
         <div className="book-shelf-changer">
-            <select>
+            <select onChange={onChangeOption}>
                 <option value={title} disabled>{title}</option>
                 {optionItems}
             </select>

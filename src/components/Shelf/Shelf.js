@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import BookList from '../BookList/BookList'
 
 const Shelf = props => {
-    const { title, bookList, shelfOptions } = props;
+    const { title, bookList, shelfOptions, onChangeShelf } = props;
 
     return (
         <div className="bookshelf">
@@ -14,6 +14,7 @@ const Shelf = props => {
                     bookList={bookList}
 
                     shelfOptions={shelfOptions}
+                    onChangeShelf={onChangeShelf}
                 />
             </div>
         </div>

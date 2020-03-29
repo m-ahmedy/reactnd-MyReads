@@ -6,7 +6,7 @@ import Search from './containers/Search/Search'
 
 class BooksApp extends React.Component {
   state = {
-    shelfOptions: ['Currently Reading', 'Want to read', 'Read', 'None']
+    shelfOptions: ['Currently reading', 'Want to read', 'Read', 'None']
   };
 
   addShelfHandler = () => { }
