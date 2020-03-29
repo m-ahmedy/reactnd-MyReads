@@ -41,11 +41,15 @@ export default class Library extends Component {
             bookLists[camelCase(shelf)] = books.filter(book => camelCase(book.shelf) === camelCase(shelf))
         });
 
+        const shelfOptions = shelves.map(shelf => paramCase(shelf));
+
         const shelfItems = shelves.map(shelf => (
             <Shelf
                 title={shelf}
                 key={paramCase(shelf)}
                 bookList={bookLists[camelCase(shelf)]}
+
+                shelfOptions={shelfOptions}
             />
         ));
 

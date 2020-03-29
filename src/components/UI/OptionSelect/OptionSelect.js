@@ -1,22 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { paramCase } from 'change-case';
-
-// Test 
-const testOptions = ['option 1', 'option 2', 'option 3', 'option 4'];
+import { paramCase, capitalCase } from 'change-case';
 
 const OptionSelect = props => {
     const { options, onChangeOption, title } = props;
 
-    const optionItems = testOptions.map(option => (
+    const optionItems = options.map(option => (
         <option
             value={option}
             key={paramCase(option)}
         >
-            {option}
+            {capitalCase(option)}
         </option>
     ));
-    
+
     return (
         <div className="book-shelf-changer">
             <select>

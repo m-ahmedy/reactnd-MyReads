@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import Book from './Book/Book'
 
 const BookList = props => {
-    const { bookList, className } = props;
+    const { bookList, className, shelfOptions } = props;
 
     const bookItems = new Array(3).length 
         ? bookList.map(book => (
             <Book
                 key={book.id}
-                bookInfo={{...book}}    
+                bookInfo={{...book}}
+                
+                shelfOptions={shelfOptions}
             />
         ))
         : null;

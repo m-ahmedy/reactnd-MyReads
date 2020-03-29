@@ -32,12 +32,12 @@ export default class Book extends Component {
                             <div className="book-cover" style={style}></div>
                             <OptionSelect
                                 title='Move'
-                                options={[]}
+                                options={this.props.shelfOptions}
                                 onChangeOption={() => { }}
                             />
                         </div>
-                        <div className="book-title">{this.state.bookInfo.title}</div>
-                        <div className="book-authors">{this.state.bookInfo.authors.join(', ')}</div>
+                        <div className="book-title">{bookInfo.title}</div>
+                        <div className="book-authors">{bookInfo.authors.join(', ')}</div>
                     </div>
                 </li>
             );
