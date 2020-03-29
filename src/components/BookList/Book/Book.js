@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import OptionSelect from '../../UI/OptionSelect/OptionSelect'
 import { sentenceCase } from 'change-case'
 
 export default class Book extends Component {
-    static propTypes = {
-        prop: PropTypes
-    }
-
     state = {}
 
     componentDidMount() {
