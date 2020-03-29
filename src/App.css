@@ -100,7 +100,8 @@ body, .app {
   outline: none;
 }
 
-.close-search {
+.close-search a:link,
+.close-search a:visited {
   display: block;
   top: 20px;
   left: 15px;
@@ -112,7 +113,13 @@ body, .app {
   background-size: 28px;
   font-size: 0;
   border: none;
+  border-radius: 10px;
   outline: none;
+}
+
+.close-search a:hover,
+.close-search a:active {
+  border: 1px solid #ccc;
 }
 
 button:active {
