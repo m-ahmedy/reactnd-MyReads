@@ -13,14 +13,14 @@ export default class Search extends Component {
     queryHandler = (query) => {
         console.log();
 
-        const queryParams = query.split(/[^\w]/);
+        const queryParams = query.split(/[^\w]/).filter(param => param !== '');
 
         this.setState(prevState => ({
             query: query,
             queryParams: queryParams
         }));
 
-        if (queryParams.join('') !== '') {
+        if (queryParams.length !== 0) {
             BooksAPI.getAll()
                 .then(fetchedBooks => {
                     console.log(queryParams);
