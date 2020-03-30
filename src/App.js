@@ -72,12 +72,31 @@ class BooksApp extends React.Component {
       });
   }
 
+  removeShelfHandler = async (shelfKey) => {
+    const updatedShelves = this.state.shelves.filter(sh => sh.key !== shelfKey);
+    const removedBooks = this.state.books.filter(book => book.shelf === shelfKey);
+    const remainingBooks = this.state.books.filter(book => book.shelf !== shelfKey);
+
+    let promises = removedBooks.map(book => BooksAPI.update(book, 'none'));
+    
+    await Promise.all(promises);
+
+    this.setState(prevState => ({
+      shelves: updatedShelves,
+      books: remainingBooks
+    }));
+    
+    localStorage.setItem('bookData', JSON.stringify(remainingBooks.filter(book => book.shelf !== 'none')));
+  }
+
   renderLibrary = () => {
     return (
       <Library
         shelves={this.state.shelves}
         books={this.state.books}
         onChangeShelf={this.changeShelfHandler}
+
+        onRemoveShelf={this.removeShelfHandler}
       />
     );
   }

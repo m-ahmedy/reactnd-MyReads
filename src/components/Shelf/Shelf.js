@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import BookList from '../BookList/BookList'
 
 const Shelf = props => {
-    const { title, bookList, shelfOptions, onChangeShelf } = props;
+    const { title, shelfKey, bookList, shelfOptions, onChangeShelf, onRemoveShelf } = props;
 
     let shelfItem = title !== 'None'
         ? (
@@ -20,7 +20,7 @@ const Shelf = props => {
                 </div>
                 <button
                     className="remove-shelf"
-                    onClick={props.onRemoveShelf}
+                    onClick={() => onRemoveShelf(shelfKey)}
                 >
                     X
                 </button>

@@ -4,7 +4,7 @@ import Button from '../../components/UI/Button/Button'
 
 export default class Library extends Component {
     render() {
-        const { shelves, books, onChangeShelf } = this.props;
+        const { shelves, books, onChangeShelf, onRemoveShelf } = this.props;
 
         const bookLists = {};
 
@@ -18,10 +18,12 @@ export default class Library extends Component {
             <Shelf
                 title={shelf.name}
                 key={shelf.key}
+                shelfKey={shelf.key}
                 bookList={bookLists[shelf.key]}
 
                 shelfOptions={shelves}
                 onChangeShelf={onChangeShelf}
+                onRemoveShelf={onRemoveShelf}
             />
         ));
 
