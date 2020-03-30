@@ -90,7 +90,7 @@ class BooksApp extends React.Component {
   }
 
   addShelfHandler = (newShelf) => {
-    if (this.state.shelves.filter(sh => sh.key === newShelf.key).length === 0) {
+    if (this.state.shelves.filter(sh => sh.key.toLowerCase() === newShelf.key.toLowerCase()).length === 0) {
       this.setState(prevState => ({
         shelves: prevState.shelves.concat(newShelf)
       }));
