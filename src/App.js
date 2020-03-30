@@ -9,6 +9,10 @@ class BooksApp extends React.Component {
   state = {
     shelves: [
       {
+        name: 'None',
+        key: 'none'
+      },
+      {
         name: 'Currently reading',
         key: 'currentlyReading'
       },
@@ -19,10 +23,6 @@ class BooksApp extends React.Component {
       {
         name: 'Read',
         key: 'read'
-      },
-      {
-        name: 'None',
-        key: 'none'
       }
     ],
     books: []
@@ -89,6 +89,16 @@ class BooksApp extends React.Component {
     localStorage.setItem('bookData', JSON.stringify(remainingBooks.filter(book => book.shelf !== 'none')));
   }
 
+  addShelfHandler = (newShelf) => {
+    if (this.state.shelves.filter(sh => sh.key === newShelf.key).length === 0) {
+      this.setState(prevState => ({
+        shelves: prevState.shelves.concat(newShelf)
+      }));
+    } else {
+      alert('You have a shelf with the same name already!');
+    }
+  }
+
   renderLibrary = () => {
     return (
       <Library
@@ -96,6 +106,7 @@ class BooksApp extends React.Component {
         books={this.state.books}
         onChangeShelf={this.changeShelfHandler}
 
+        onAddShelf={this.addShelfHandler}
         onRemoveShelf={this.removeShelfHandler}
       />
     );

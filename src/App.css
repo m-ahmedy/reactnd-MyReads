@@ -58,6 +58,49 @@ body, .app {
   border: 1px solid #777;
 }
 
+.add-shelf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.add-shelf input {
+  padding: 5px 10px;
+  border-radius: 100px 0 0 100px;
+  border: 2px solid #ccc;
+  border-right: none;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.add-shelf input:focus {
+  outline: none;
+  border: 2px solid #ccc;
+  border-right: none;
+}
+
+.add-shelf button {
+  padding: 5px 10px;
+  border-radius: 0 100px 100px 0;
+  border: 2px solid #ccc;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.add-shelf button:active {
+  outline: none;
+  border: 2px solid #ccc;
+}
+
+.add-shelf button:disabled {
+  color: #555;
+  cursor: not-allowed;
+}
+
 @media (min-width: 600px) {
   .bookshelf {
     padding: 0 20px 40px;
