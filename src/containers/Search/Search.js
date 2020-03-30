@@ -15,50 +15,39 @@ export default class Search extends Component {
     debounceTimer = null;
 
     initiateSearch = async () => {
-        console.log('[Search] Fired the timer', new Date().getTime());
-
+        // console.log('[Search] Fired the timer', new Date().getTime());
         const { queryParams } = this.state;
+
         if (queryParams.length !== 0) {
+            // Array of promises which will wait to resolve
             let promises = queryParams.map(param => BooksAPI.search(param));
 
             let fetchedBooks = [];
             await Promise.all(promises)
                 .then(res => {
                     res.forEach(arr => {
-                        console.log('[Search]', arr);
+                        // console.log('[Search]', arr);
                         fetchedBooks = _.union(fetchedBooks, arr);
                     });
                 })
                 .catch(err => console.log(err));
 
-            const updatedBooksWithLocalState = fetchedBooks.map(book => {
-                // console.log('[Search] fetched', book);
-                console.log('[Search] fetched id', book.title);
+            const updatedBooks = fetchedBooks.map(book => {
 
-                const b = this.props.books.find(b => {
-                    console.log('[Search] local name', b.title);
+                const localSimilarBook = this.props.books.find(b => b.title === book.title);
 
-                    return b.title === book.title
-                });
-
-                if (b) console.log('[Search] updating the book', b);
-
-                const o = {
+                const updatedBook = {
                     ...book,
-                    shelf: b ? b.shelf : 'none'
+                    shelf: localSimilarBook ? localSimilarBook.shelf : 'none'
                 };
 
-                return o;
+                return updatedBook;
             });
 
-            console.log('[Search]', updatedBooksWithLocalState);
-
             this.setState(prevState => ({
-                queryBooks: updatedBooksWithLocalState,
+                queryBooks: updatedBooks,
                 loading: false
             }));
-
-
 
         } else {
             this.setState(prevState => ({
@@ -79,7 +68,7 @@ export default class Search extends Component {
         }));
 
         clearTimeout(this.debounceTimer);
-        console.log('[Search]', this.debounceTimer, new Date().getTime());
+        // console.log('[Search]', this.debounceTimer, new Date().getTime());
         this.debounceTimer = setTimeout(this.initiateSearch, 1500);
     }
 
