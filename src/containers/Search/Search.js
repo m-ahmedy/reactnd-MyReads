@@ -21,7 +21,8 @@ export default class Search extends Component {
             // Array of promises which will wait to resolve
             let promises = queryParams.map(param => BooksAPI.search(param.toLowerCase()));
 
-            let resolvedPromises = await Promise.all(promises);
+            let resolvedPromises = await Promise.all(promises)
+            .catch(err => console.log(err));
             // console.log('resolved promises', resolvedPromises);
 
             let fetchedBooks = [];

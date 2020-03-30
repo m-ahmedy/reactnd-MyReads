@@ -34,7 +34,7 @@ class BooksApp extends React.Component {
     if (localData && localData.length !== 0) {
       const savedData = JSON.parse(localData);
 
-      console.log('[App]', savedData);
+      // console.log('[App]', savedData);
       this.setState(prevState => ({
         books: savedData
       }));
@@ -42,19 +42,20 @@ class BooksApp extends React.Component {
     } else {
       BooksAPI.getAll()
         .then(fetchedBooks => {
-          console.log('[App]', fetchedBooks);
+          // console.log('[App]', fetchedBooks);
 
           this.setState(prevState => ({
             books: fetchedBooks
           }));
 
           localStorage.setItem('bookData', JSON.stringify(fetchedBooks.filter(book => book.shelf !== 'none')));
-        });
+        })
+        .catch(err => console.log(err));
     }
   }
 
   changeShelfHandler = (updatedBookInfo) => {
-    console.log('[App]', updatedBookInfo)
+    // console.log('[App]', updatedBookInfo)
 
     BooksAPI.update(updatedBookInfo.id, updatedBookInfo.shelf)
       .then(res => {
@@ -62,14 +63,15 @@ class BooksApp extends React.Component {
           .filter(book => book.id !== updatedBookInfo.id)
           .concat(updatedBookInfo);
 
-        console.log('[App]', updatedBooks);
+        // console.log('[App]', updatedBooks);
 
         this.setState((prevState) => ({
           books: updatedBooks
         }));
 
         localStorage.setItem('bookData', JSON.stringify(updatedBooks.filter(book => book.shelf !== 'none')));
-      });
+      })
+      .catch(err => console.log(err));
   }
 
   removeShelfHandler = async (shelfKey) => {
@@ -77,7 +79,7 @@ class BooksApp extends React.Component {
     const removedBooks = this.state.books.filter(book => book.shelf === shelfKey);
     const remainingBooks = this.state.books.filter(book => book.shelf !== shelfKey);
 
-    let promises = removedBooks.map(book => BooksAPI.update(book, 'none'));
+    let promises = removedBooks.map(book => BooksAPI.update(book, 'none').catch(err => console.log(err)));
     
     await Promise.all(promises);
 

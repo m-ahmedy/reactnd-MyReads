@@ -53,12 +53,12 @@ export default class Library extends Component {
 
         const bookLists = {};
 
-        console.log('[Library]', books);
+        // console.log('[Library]', books);
         shelves.forEach(shelf => {
             bookLists[shelf.key] = books.filter(book => book.shelf === shelf.key);
         });
 
-        console.log('[Library]', shelves);
+        // console.log('[Library]', shelves);
         const shelfItems = shelves.map(shelf => (
             <Shelf
                 title={shelf.name}
@@ -72,7 +72,7 @@ export default class Library extends Component {
             />
         ));
 
-        console.log('[Library]', shelves);
+        // console.log('[Library]', shelves);
         return (
             <div className="list-books">
                 <div className="list-books-title">
