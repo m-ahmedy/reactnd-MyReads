@@ -18,6 +18,12 @@ const Shelf = props => {
                         onChangeShelf={onChangeShelf}
                     />
                 </div>
+                <button
+                    className="remove-shelf"
+                    onClick={props.onRemoveShelf}
+                >
+                    X
+                </button>
             </div>
         )
         : null;

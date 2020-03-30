@@ -31,6 +31,31 @@ body, .app {
 
 .bookshelf {
   padding: 0 10px 20px;
+  position: relative;
+}
+
+.remove-shelf {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  border-radius: 50%;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.remove-shelf:active {
+  background-color: #ccc;
+  border: 1px solid #eee;
+}
+.remove-shelf:focus {
+  outline: none;
+  border: 1px solid #777;
 }
 
 @media (min-width: 600px) {
