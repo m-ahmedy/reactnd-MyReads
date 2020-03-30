@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import * as BooksAPI from '../../apis/BooksAPI'
-import * as _ from 'underscore'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import SearchResults from '../../components/SearchResults/SearchResults'
 
@@ -20,17 +19,24 @@ export default class Search extends Component {
 
         if (queryParams.length !== 0) {
             // Array of promises which will wait to resolve
-            let promises = queryParams.map(param => BooksAPI.search(param));
+            let promises = queryParams.map(param => BooksAPI.search(param.toLowerCase()));
+
+            let resolvedPromises = await Promise.all(promises);
+            // console.log('resolved promises', resolvedPromises);
 
             let fetchedBooks = [];
-            await Promise.all(promises)
-                .then(res => {
-                    res.forEach(arr => {
-                        // console.log('[Search]', arr);
-                        fetchedBooks = _.union(fetchedBooks, arr);
+            resolvedPromises.forEach(el => {
+                if (Array.isArray(el)) {
+                    // console.log('Is an array', el);
+                    el.forEach(book => {
+                        if (!fetchedBooks.find(b => book.id === b.id)) {
+                            fetchedBooks.push(book);
+                        }
                     });
-                })
-                .catch(err => console.log(err));
+                }
+            });
+
+            // console.log('[Fetched books]', fetchedBooks);
 
             const updatedBooks = fetchedBooks.map(book => {
 
